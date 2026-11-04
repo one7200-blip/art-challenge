@@ -24,7 +24,7 @@ async function startQuiz(){
  try{
   if(connected){state.quiz=await rpc('quiz_start',{p_name:state.player.name,p_class_no:state.player.classNo,p_student_no:state.player.studentNo});}
   else{
-   if(!demoBank){const res=await fetch('artworks.json');if(!res.ok)throw new Error('작품을 불러오지 못했어요. 다시 시도해 주세요.');demoBank=await res.json();}
+   if(!demoBank){const res=await fetch('artworks.json?v=20261104');if(!res.ok)throw new Error('작품을 불러오지 못했어요. 다시 시도해 주세요.');demoBank=await res.json();}
    state.quiz={id:crypto.randomUUID(),questions:shuffled(demoBank).slice(0,10).map(a=>({id:a.id,image:a.image,correct:a.title,choices:shuffled([a.title,...shuffled(demoBank.filter(b=>b.id!==a.id)).slice(0,2).map(b=>b.title)])}))};
   }
   state.index=0;state.answers=[];state.result=null;$('player-label').textContent=`3학년 ${state.player.classNo}반 · ${state.player.name}`;show('quiz');renderQuestion();
